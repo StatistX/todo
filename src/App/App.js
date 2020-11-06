@@ -13,6 +13,7 @@ class App extends Component {
 			{ label: 'Eat Lunch', important: false, done: false, id: 3 },
 		],
 		addInputValue: '',
+		searchInputValue: '',
 	}
 
 	onChangeAddItemValue = (e) => {
@@ -75,7 +76,19 @@ class App extends Component {
 		}));
 	}
 
+	onChangeSearchInputValue = (event) => {
+		const value = event.target.value;
+		this.setState(prevState => ({
+			...prevState,
+			searchInputValue: value
+		}))
+	}
+
 	render() {
+		const searchInputValue = this.state.searchInputValue.toLocaleLowerCase();
+		const searchedTodoList = this.state.todos.filter(item => item.label
+			.toLocaleLowerCase().includes(searchInputValue));
+	
 		const countToDo = this.state.todos.filter(item => !item.done).length;
 		const countDone = this.state.todos.length - countToDo;
 
@@ -85,19 +98,27 @@ class App extends Component {
 					countTodo={countToDo}
 					countDone={countDone}
 				/>
-				<SearchPanel />
-				<TodoList
-					todos={this.state.todos}
-					onDeleteItem={this.onDeleteItem}
-					onMakeDoneItem={this.onMakeDoneItem}
-					onMakeImportant={this.onMakeImportant}
+				<SearchPanel
+					searchInputValue={searchInputValue}
+					onChangeSearchInputValue={this.onChangeSearchInputValue}
+					viewAllTodos={this.viewAllTodos}
+					viewImportantTodos={this.viewImportantTodos}
 				/>
+				{searchedTodoList.length !== 0
+				? <TodoList
+						todos={searchedTodoList}
+						onDeleteItem={this.onDeleteItem}
+						onMakeDoneItem={this.onMakeDoneItem}
+						onMakeImportant={this.onMakeImportant}
+					/>
+				: <div className='row'>Nothing to do</div>}
 				<AddItemPanel
 					addInputValue={this.state.addInputValue}
 					onChangeAddItemValue={this.onChangeAddItemValue}
 					onAddItem={this.onAddItem}
 				/>
 				{console.log(this.state)}
+				{console.log(searchedTodoList)}
 			</div>
 		)
 	}

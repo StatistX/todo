@@ -1,18 +1,30 @@
 import React from 'react';
 
-const SearchPanel = () => {
+const SearchPanel = ({
+  searchInputValue,
+  onChangeSearchInputValue,
+  viewAllTodos,
+  viewImportantTodos
+}) => {
+
   return (
     <div className='row'>
-      <div className=''>
+      <div>
         <input
           type='text'
           placeholder='Search to do'
+          value={searchInputValue}
+          onChange={onChangeSearchInputValue}
         />
       </div>
-      <div className=''>
-        <button className=''>All</button>
-        <button className=''>Important</button>
-        <button className=''>Done</button>
+      <div>
+        <button
+          onClick={viewAllTodos}
+        >All</button>
+        <button
+          onClick={viewImportantTodos}
+        >Important</button>
+        <button>Done</button>
       </div>
     </div>
   )

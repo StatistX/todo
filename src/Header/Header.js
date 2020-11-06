@@ -6,12 +6,10 @@ const Header = ({
 }) => {
 	return (
 		<div className='row'>
-			<div className=''>
+			<div>
 				<span>Todo</span>
 			</div>
-			<div className=''>
-			</div>
-			<div className=''>
+			<div>
 				<span>{countTodo} more to do, {countDone} done</span>
 			</div>
 		</div>
