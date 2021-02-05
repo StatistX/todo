@@ -3,10 +3,8 @@ import React from 'react';
 const SearchPanel = ({
   searchInputValue,
   onChangeSearchInputValue,
-  viewAllTodos,
-  viewImportantTodos
+  changeFilter
 }) => {
-
   return (
     <div className='row'>
       <div>
@@ -19,12 +17,14 @@ const SearchPanel = ({
       </div>
       <div>
         <button
-          onClick={viewAllTodos}
+          onClick={() => changeFilter('all')}
         >All</button>
         <button
-          onClick={viewImportantTodos}
+          onClick={() => changeFilter('important')}
         >Important</button>
-        <button>Done</button>
+        <button
+          onClick={() => changeFilter('done')}
+        >Done</button>
       </div>
     </div>
   )

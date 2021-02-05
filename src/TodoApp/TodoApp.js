@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import AddItemPanel from '../AddItemPanel/AddItemPanel';
-import Header from '../Header/Header';
-import SearchPanel from '../SearchPanel/SearchPanel';
-import TodoList from '../TodoList/TodoList';
+import AddItemPanel from './AddItemPanel/AddItemPanel';
+import Header from './Header/Header';
+import Modal from '../Modal/Modal';
+import SearchPanel from './SearchPanel/SearchPanel';
+import TodoList from './TodoList/TodoList';
 
-class App extends Component {
+class TodoApp extends Component {
 
 	state = {
 		todos: [
@@ -14,6 +15,8 @@ class App extends Component {
 		],
 		addInputValue: '',
 		searchInputValue: '',
+		filter: 'all',
+		showModal: false,
 	}
 
 	onChangeAddItemValue = (e) => {
@@ -77,16 +80,41 @@ class App extends Component {
 	}
 
 	onChangeSearchInputValue = (event) => {
-		const value = event.target.value;
+		this.setState({
+			searchInputValue: event.target.value
+		})
+	}
+
+	changeFilter = (filter) => {
+		this.setState({
+			filter
+		})
+	}
+
+	viewFilteredTodos = (filter, todos) => {
+		switch(filter) {
+			case 'all':
+				return todos;
+			case 'important':
+				return todos.filter(item => item.important);
+			case 'done':
+				return todos.filter(item => item.done);
+			default:
+				return todos;
+		}
+	}
+
+	onShowModal = () => {
 		this.setState(prevState => ({
-			...prevState,
-			searchInputValue: value
+			showModal: !prevState.showModal
 		}))
 	}
 
 	render() {
+		const filteredTodos = this.viewFilteredTodos(this.state.filter, this.state.todos);
+
 		const searchInputValue = this.state.searchInputValue.toLocaleLowerCase();
-		const searchedTodoList = this.state.todos.filter(item => item.label
+		const searchedTodoList = filteredTodos.filter(item => item.label
 			.toLocaleLowerCase().includes(searchInputValue));
 	
 		const countToDo = this.state.todos.filter(item => !item.done).length;
@@ -101,8 +129,7 @@ class App extends Component {
 				<SearchPanel
 					searchInputValue={searchInputValue}
 					onChangeSearchInputValue={this.onChangeSearchInputValue}
-					viewAllTodos={this.viewAllTodos}
-					viewImportantTodos={this.viewImportantTodos}
+					changeFilter={this.changeFilter}
 				/>
 				{searchedTodoList.length !== 0
 				? <TodoList
@@ -117,11 +144,11 @@ class App extends Component {
 					onChangeAddItemValue={this.onChangeAddItemValue}
 					onAddItem={this.onAddItem}
 				/>
-				{console.log(this.state)}
-				{console.log(searchedTodoList)}
+				<button onClick={this.onShowModal}>Show modal</button>
+				{this.state.showModal && <Modal onShowModal={this.onShowModal}/>}
 			</div>
 		)
 	}
 };
 
-export default App;
+export default TodoApp;
