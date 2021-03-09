@@ -5,6 +5,14 @@ body, html {
   font-size: 16px;
 }
 
+.wrapper {
+  height: 100vh;
+  background: linear-gradient(to right top, #9198e5, #FFFFE0);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
 button {
   min-width: 38px;
   padding: 5px;
@@ -28,9 +36,11 @@ button:hover {
 }
 
 .container {
-  max-width: 600px;
+  width: 35%;
   padding: 10px 15px;
-  margin: 0 auto;
+  margin: 10% auto;
+  background: linear-gradient(to right top, rgba(255, 255, 255, .6), rgba(255, 255, 255, .3));
+  border-radius: 10px;
 }
 
 .row {
